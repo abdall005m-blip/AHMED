@@ -89,9 +89,6 @@ dependencies {
     implementation(libs.androidx.hilt.work)
     kapt(libs.androidx.hilt.compiler)
 
-    // Glassmorphism / Blur
-    implementation(libs.haze)
-
     // Animations
     implementation(libs.lottie.compose)
 
@@ -111,7 +108,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
-// Allow references to generated code
 kapt {
     correctErrorTypes = true
 }
