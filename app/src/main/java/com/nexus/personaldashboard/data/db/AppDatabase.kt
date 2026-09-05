@@ -11,14 +11,18 @@ import com.nexus.personaldashboard.data.db.entity.NotificationEntity
 import com.nexus.personaldashboard.data.db.entity.ScheduleEntity
 import com.nexus.personaldashboard.data.db.entity.TaskEntity
 
+import com.nexus.personaldashboard.data.db.dao.PrivateMessageDao
+import com.nexus.personaldashboard.data.db.entity.PrivateMessageEntity
+
 @Database(
     entities = [
         NotificationEntity::class,
         TaskEntity::class,
         ScheduleEntity::class,
-        AIAppEntity::class
+        AIAppEntity::class,
+        PrivateMessageEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -26,4 +30,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun scheduleDao(): ScheduleDao
     abstract fun aiAppDao(): AIAppDao
+    abstract fun privateMessageDao(): PrivateMessageDao
 }

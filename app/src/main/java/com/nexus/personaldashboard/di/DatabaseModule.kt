@@ -36,4 +36,7 @@ object DatabaseModule {
 
     @Provides
     fun provideAIAppDao(db: AppDatabase): AIAppDao = db.aiAppDao()
+
+    @Provides
+    fun providePrivateMessageDao(db: AppDatabase): com.nexus.personaldashboard.data.db.dao.PrivateMessageDao = db.privateMessageDao()
 }
