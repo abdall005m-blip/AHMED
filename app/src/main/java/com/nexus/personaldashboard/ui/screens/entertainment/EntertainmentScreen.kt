@@ -86,6 +86,8 @@ fun EntertainmentScreen(
                             databaseEnabled = true
                             allowFileAccess = true
                             allowContentAccess = true
+                            allowFileAccessFromFileURLs = true
+                            allowUniversalAccessFromFileURLs = true
                             mediaPlaybackRequiresUserGesture = false
                             loadsImagesAutomatically = true
                             cacheMode = WebSettings.LOAD_DEFAULT
