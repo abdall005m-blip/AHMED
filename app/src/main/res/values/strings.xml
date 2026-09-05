@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Nexus</string>
+    <string name="notification_listener_service_label">Nexus Notification Service</string>
+    <string name="androidx_startup" translatable="false">androidx.startup</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_notifications">الإشعارات</string>
+    <string name="nav_ai_hub">AI Hub</string>
+    <string name="nav_tasks">المهام</string>
+    <string name="nav_schedule">الجدول</string>
+
+    <!-- Common -->
+    <string name="search">بحث...</string>
+    <string name="settings">الإعدادات</string>
+    <string name="save">حفظ</string>
+    <string name="cancel">إلغاء</string>
+    <string name="delete">حذف</string>
+    <string name="edit">تعديل</string>
+    <string name="open">فتح</string>
+    <string name="installed">مثبت</string>
+    <string name="not_installed">غير مثبت</string>
+
+    <!-- Notifications Section -->
+    <string name="tab_all">الكل</string>
+    <string name="tab_important">المهمة</string>
+    <string name="tab_silent_dnd">Silent &amp; DND</string>
+    <string name="grant_notif_access">السماح بالوصول إلى إشعارات الهاتف</string>
+    <string name="notif_access_desc">اسمح للتطبيق بالوصول إلى إشعاراتك حتى نتمكن من تنظيمها وعرضها في مكان واحد.</string>
+    <string name="notif_access_enabled">الوصول للإشعارات: مفعل ●</string>
+    <string name="notif_access_disabled">الوصول للإشعارات: غير مفعل ○</string>
+    <string name="open_settings">فتح الإعدادات</string>
+
+    <!-- Greetings -->
+    <string name="good_morning">صباح الخير 👋</string>
+    <string name="good_afternoon">مساء الخير 👋</string>
+    <string name="good_evening">مساء النور 👋</string>
+    <string name="good_night">طاب مساؤك 🌙</string>
+</resources>
