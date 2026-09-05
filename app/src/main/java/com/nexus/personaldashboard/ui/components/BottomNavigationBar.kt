@@ -28,8 +28,9 @@ fun NexusBottomNavigationBar(
     val items = listOf(
         BottomNavItem(NavRoute.HOME, Icons.Rounded.Home, "Home"),
         BottomNavItem(NavRoute.NOTIFICATIONS, Icons.Rounded.Notifications, "Notifications"),
-        BottomNavItem(NavRoute.AI_HUB, Icons.Rounded.Psychology, "AI Hub"),
         BottomNavItem(NavRoute.TASKS, Icons.Rounded.CheckCircle, "Tasks"),
+        BottomNavItem(NavRoute.ENTERTAINMENT, Icons.Rounded.SportsEsports, "Entertainment"),
+        BottomNavItem(NavRoute.AI_HUB, Icons.Rounded.Psychology, "AI Hub"),
         BottomNavItem(NavRoute.SCHEDULE, Icons.Rounded.CalendarMonth, "Schedule")
     )
 

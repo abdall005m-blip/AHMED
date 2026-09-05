@@ -9,6 +9,7 @@
     <string name="nav_ai_hub">AI Hub</string>
     <string name="nav_tasks">Tasks</string>
     <string name="nav_schedule">Schedule</string>
+    <string name="nav_entertainment">Fun</string>
 
     <!-- Common -->
     <string name="search">Search...</string>

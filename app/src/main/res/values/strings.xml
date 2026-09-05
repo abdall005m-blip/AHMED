@@ -9,6 +9,7 @@
     <string name="nav_ai_hub">AI Hub</string>
     <string name="nav_tasks">المهام</string>
     <string name="nav_schedule">الجدول</string>
+    <string name="nav_entertainment">ترفيه</string>
 
     <!-- Common -->
     <string name="search">بحث...</string>

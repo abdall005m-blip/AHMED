@@ -1,0 +1,163 @@
+/* Message Bubble Customization Styles for Ahmed & Rody */
+
+/* Base Chat Bubble */
+.chat-msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 78%;
+  margin-bottom: 12px;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+/* Ahmed right aligned, Rody left aligned */
+.chat-msg.msg-ahmed {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.chat-msg.msg-rody {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.bubble-content {
+  padding: 12px 18px;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  position: relative;
+  word-break: break-word;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Style 1: Default / Classic Glass */
+.style-default.msg-ahmed .bubble-content {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+}
+.style-default.msg-rody .bubble-content {
+  background: var(--surface-glass-card);
+  color: var(--text-main);
+  border: 1px solid var(--surface-glass-border);
+  border-bottom-left-radius: 4px;
+}
+
+/* Style 2: Flowers (زهور لطيفة) */
+.style-flowers .bubble-content {
+  background: linear-gradient(135deg, #fdf2f8 0%, #fbcfe8 100%);
+  color: #831843;
+  border: 2px dashed #f472b6;
+  border-radius: 24px;
+}
+.style-flowers .bubble-content::after {
+  content: '🌸';
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  font-size: 14px;
+}
+
+/* Style 3: Hearts (قلوب وردية) */
+.style-hearts .bubble-content {
+  background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+  color: #9f1239;
+  border: 1.5px solid #fb7185;
+  border-radius: 22px;
+  box-shadow: 0 6px 16px rgba(251, 113, 133, 0.2);
+}
+.style-hearts .bubble-content::after {
+  content: '💖';
+  position: absolute;
+  top: -8px;
+  left: -6px;
+  font-size: 13px;
+}
+
+/* Style 4: Cats (قطط كيوت) */
+.style-cats .bubble-content {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #78350f;
+  border: 2px solid #f59e0b;
+  border-radius: 20px 20px 6px 20px;
+}
+.style-cats .bubble-content::after {
+  content: '🐾';
+  position: absolute;
+  bottom: -6px;
+  right: -4px;
+  font-size: 12px;
+}
+
+/* Style 5: Dogs (جرو لطيف) */
+.style-dogs .bubble-content {
+  background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+  color: #7c2d12;
+  border: 2px solid #fb923c;
+  border-radius: 22px;
+}
+.style-dogs .bubble-content::after {
+  content: '🐶';
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  font-size: 13px;
+}
+
+/* Style 6: Clouds (سحاب ناعم) */
+.style-clouds .bubble-content {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  color: #0369a1;
+  border: 1.5px solid #38bdf8;
+  border-radius: 28px;
+}
+.style-clouds .bubble-content::after {
+  content: '☁️';
+  position: absolute;
+  top: -8px;
+  left: 6px;
+  font-size: 12px;
+}
+
+/* Style 7: Stars (نجوم سحرية) */
+.style-stars .bubble-content {
+  background: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
+  color: #fef08a;
+  border: 1.5px solid #facc15;
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(250, 204, 21, 0.25);
+}
+.style-stars .bubble-content::after {
+  content: '✨';
+  position: absolute;
+  top: -8px;
+  right: 6px;
+  font-size: 14px;
+}
+
+/* Media audio and images within bubbles */
+.chat-audio-player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 200px;
+}
+
+.chat-image-preview {
+  max-width: 240px;
+  max-height: 240px;
+  border-radius: 12px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.msg-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+}

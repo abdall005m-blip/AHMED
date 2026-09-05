@@ -7,6 +7,7 @@ enum class NavRoute {
     AI_HUB,
     TASKS,
     SCHEDULE,
+    ENTERTAINMENT,
     SETTINGS,
     SEARCH,
     ADD_TASK,

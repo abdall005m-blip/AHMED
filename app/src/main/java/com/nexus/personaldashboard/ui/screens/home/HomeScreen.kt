@@ -172,6 +172,35 @@ fun HomeScreen(
                 }
             }
 
+            // Entertainment Section (ترفيه)
+            item {
+                SectionCard(
+                    title = "Entertainment & Games 🎮",
+                    count = 4,
+                    onClick = { onNavigate(NavRoute.ENTERTAINMENT) }
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                "Private Chat, 4 Games, Islamic & Mood",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                "Ahmed & Rody Realtime Hub",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        Text("✨", fontSize = 24.sp)
+                    }
+                }
+            }
+
             // AI Apps quick access
             item {
                 GlassCard(modifier = Modifier.fillMaxWidth()) {

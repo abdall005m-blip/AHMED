@@ -18,6 +18,7 @@ import com.nexus.personaldashboard.data.preferences.UserPreferencesRepository
 import com.nexus.personaldashboard.ui.components.NexusBottomNavigationBar
 import com.nexus.personaldashboard.ui.screens.aihub.AIHubScreen
 import com.nexus.personaldashboard.ui.screens.aihub.AddEditAIAppScreen
+import com.nexus.personaldashboard.ui.screens.entertainment.EntertainmentScreen
 import com.nexus.personaldashboard.ui.screens.home.HomeScreen
 import com.nexus.personaldashboard.ui.screens.notifications.NotificationsScreen
 import com.nexus.personaldashboard.ui.screens.onboarding.OnboardingScreen
@@ -31,8 +32,9 @@ import com.nexus.personaldashboard.ui.screens.tasks.TasksScreen
 val bottomNavRoutes = setOf(
     NavRoute.HOME,
     NavRoute.NOTIFICATIONS,
-    NavRoute.AI_HUB,
     NavRoute.TASKS,
+    NavRoute.ENTERTAINMENT,
+    NavRoute.AI_HUB,
     NavRoute.SCHEDULE
 )
 
@@ -118,6 +120,10 @@ fun AppNavigation(
                     onAdd = { navController.navigate(NavRoute.ADD_SCHEDULE.name) },
                     onEdit = { scheduleId -> navController.navigate("${NavRoute.EDIT_SCHEDULE.name}/$scheduleId") }
                 )
+            }
+
+            composable(NavRoute.ENTERTAINMENT.name) {
+                EntertainmentScreen(onBack = { navController.popBackStack() })
             }
 
             composable(NavRoute.SETTINGS.name) {
