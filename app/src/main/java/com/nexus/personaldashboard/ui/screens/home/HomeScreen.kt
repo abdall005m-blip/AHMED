@@ -1,25 +1,49 @@
 package com.nexus.personaldashboard.ui.screens.home
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nexus.personaldashboard.ui.components.GlassCard
+import com.nexus.personaldashboard.ui.components.SectionBackground
+import com.nexus.personaldashboard.ui.components.MascotAssistant
+import com.nexus.personaldashboard.ui.components.SpecialDayOverlay
+import com.nexus.personaldashboard.ui.components.ChangeVibeButton
 import com.nexus.personaldashboard.ui.navigation.NavRoute
+import com.nexus.personaldashboard.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
+
+data class HomeCard(
+    val route: NavRoute,
+    val title: String,
+    val titleAr: String,
+    val emoji: String,
+    val description: String,
+    val accentColor: Color,
+    val gradientColors: List<Color>
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,255 +54,245 @@ fun HomeScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val greeting = getGreeting()
     val dateStr = SimpleDateFormat("EEEE, d MMMM", Locale.getDefault()).format(Date())
+    var showMascotChat by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {},
-                actions = {
-                    IconButton(onClick = { onNavigate(NavRoute.SEARCH) }) {
-                        Icon(Icons.Rounded.Search, contentDescription = "Search")
-                    }
-                    IconButton(onClick = { onNavigate(NavRoute.SETTINGS) }) {
-                        Icon(Icons.Rounded.Settings, contentDescription = "Settings")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { padding ->
-        LazyColumn(
+    val cards = listOf(
+        HomeCard(NavRoute.ENTERTAINMENT, "Entertainment", "ترفيه", "🎮", "Games, Chat & Fun", EntertainmentAccent,
+            listOf(Color(0xFF7C3AED), Color(0xFF4F46E5))),
+        HomeCard(NavRoute.PRIVATE_CHAT, "Private Chat", "الشات الخاص", "💬", "Your secret space", ChatAccent,
+            listOf(Color(0xFFEC4899), Color(0xFFBE185D))),
+        HomeCard(NavRoute.ISLAMIC, "Islamic", "إسلامي", "🕌", "Quran, Azkar & Prayer", IslamicAccent,
+            listOf(Color(0xFF059669), Color(0xFF047857))),
+        HomeCard(NavRoute.MOOD, "Mood", "مزاجي", "💖", "How are you feeling?", MoodAccent,
+            listOf(Color(0xFFF59E0B), Color(0xFFD97706))),
+        HomeCard(NavRoute.TASKS, "Tasks", "المهام", "✅", "Your to-do list", TasksAccent,
+            listOf(Color(0xFF10B981), Color(0xFF059669))),
+        HomeCard(NavRoute.SCHEDULE, "Schedule", "جدولي", "📅", "Your weekly plan", ScheduleAccent,
+            listOf(Color(0xFF3B82F6), Color(0xFF2563EB))),
+        HomeCard(NavRoute.NOTIFICATIONS, "Notifications", "الإشعارات", "🔔", "Stay updated", NotificationsAccent,
+            listOf(Color(0xFFF97316), Color(0xFFEA580C))),
+        HomeCard(NavRoute.AI_HUB, "AI Hub", "مركز الذكاء", "🤖", "Your AI tools", AIAccent,
+            listOf(Color(0xFF06B6D4), Color(0xFF0891B2))),
+        HomeCard(NavRoute.SPECIAL_DAYS, "Special Days", "الأيام المميزة", "🎉", "عيد ومناسبات خاصة", ScheduleAccent,
+            listOf(Color(0xFF8B5CF6), Color(0xFF7C3AED))),
+        HomeCard(NavRoute.SETTINGS, "Settings", "الإعدادات", "⚙️", "Customize your app", SettingsAccent,
+            listOf(Color(0xFF6B7280), Color(0xFF4B5563)))
+    )
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Section-specific background
+        SectionBackground(section = "home")
+
+        // Special day overlay (sheep for Eid, etc.)
+        SpecialDayOverlay()
+
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .statusBarsPadding()
         ) {
-            item {
-                Column {
-                    Text(
-                        text = greeting,
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold
+            // Header
+            HomeHeader(
+                greeting = greeting,
+                dateStr = dateStr,
+                coinsBalance = state.coinsBalance,
+                onMascotClick = { showMascotChat = true },
+                onSettingsClick = { onNavigate(NavRoute.SETTINGS) },
+                onCoinStoreClick = { onNavigate(NavRoute.COIN_STORE) }
+            )
+
+            // Change the Vibe button
+            ChangeVibeButton(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+
+            // Cards Grid
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(cards) { card ->
+                    HomeFeatureCard(
+                        card = card,
+                        onClick = { onNavigate(card.route) }
                     )
+                }
+            }
+        }
+
+        // Mascot Assistant overlay
+        if (showMascotChat) {
+            MascotAssistant(
+                onNavigate = onNavigate,
+                onDismiss = { showMascotChat = false }
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeHeader(
+    greeting: String,
+    dateStr: String,
+    coinsBalance: Int,
+    onMascotClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onCoinStoreClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Mascot avatar (replaces search)
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .background(
+                    Brush.radialGradient(
+                        listOf(Purple60, Purple40)
+                    )
+                )
+                .clickable { onMascotClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Text("🤖", fontSize = 24.sp)
+        }
+
+        // Title + date
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "Nexus ✨",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = greeting,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        // Coins + Settings
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Coins badge
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .clickable { onCoinStoreClick() }
+                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text("🪙", fontSize = 14.sp)
                     Text(
-                        text = dateStr,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = coinsBalance.toString(),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = CoinsAccent
                     )
                 }
             }
 
-            // Today's Tasks
-            item {
-                SectionCard(
-                    title = "Today's Tasks 📝",
-                    count = state.todayTasks.size,
-                    onClick = { onNavigate(NavRoute.TASKS) }
-                ) {
-                    if (state.todayTasks.isEmpty()) {
-                        Text(
-                            "No pending tasks for today 🎉",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    } else {
-                        state.todayTasks.forEach { task ->
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(vertical = 4.dp)
-                            ) {
-                                Icon(
-                                    Icons.Rounded.RadioButtonUnchecked,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.size(18.dp)
-                                )
-                                Spacer(Modifier.width(8.dp))
-                                Text(
-                                    text = task.title,
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Important Notifications
-            item {
-                SectionCard(
-                    title = "Important Notifications 🔔",
-                    count = state.importantNotifications.size,
-                    onClick = { onNavigate(NavRoute.NOTIFICATIONS) }
-                ) {
-                    if (state.importantNotifications.isEmpty()) {
-                        Text(
-                            "No high priority notifications right now",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    } else {
-                        state.importantNotifications.forEach { notif ->
-                            Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                                Text(
-                                    text = notif.appName,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                Text(
-                                    text = notif.title.ifBlank { notif.content },
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Next Schedule
-            item {
-                SectionCard(
-                    title = "Schedule 📅",
-                    count = state.upcomingSchedules.size,
-                    onClick = { onNavigate(NavRoute.SCHEDULE) }
-                ) {
-                    if (state.upcomingSchedules.isEmpty()) {
-                        Text(
-                            "No schedules scheduled for today",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    } else {
-                        state.upcomingSchedules.forEach { schedule ->
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(vertical = 4.dp)
-                            ) {
-                                Text(
-                                    text = schedule.iconName.ifBlank { "📌" },
-                                    modifier = Modifier.padding(end = 8.dp)
-                                )
-                                Text(
-                                    text = schedule.title,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Entertainment Section (ترفيه)
-            item {
-                SectionCard(
-                    title = "Entertainment & Games 🎮",
-                    count = 4,
-                    onClick = { onNavigate(NavRoute.ENTERTAINMENT) }
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            Text(
-                                "Private Chat, 4 Games, Islamic & Mood",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium
-                            )
-                            Text(
-                                "Ahmed & Rody Realtime Hub",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        Text("✨", fontSize = 24.sp)
-                    }
-                }
-            }
-
-            // AI Apps quick access
-            item {
-                GlassCard(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            "AI Hub 🤖",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        TextButton(onClick = { onNavigate(NavRoute.AI_HUB) }) {
-                            Text("See all")
-                        }
-                    }
-                    Spacer(Modifier.height(8.dp))
-                    if (state.aiApps.isEmpty()) {
-                        Text(
-                            "Add AI apps to get started",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    } else {
-                        LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                            items(state.aiApps) { app ->
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier.width(64.dp)
-                                ) {
-                                    Text(app.iconEmoji, fontSize = 32.sp)
-                                    Spacer(Modifier.height(4.dp))
-                                    Text(
-                                        text = app.name,
-                                        style = MaterialTheme.typography.labelSmall,
-                                        maxLines = 1
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
+            // Settings
+            IconButton(onClick = onSettingsClick) {
+                Icon(
+                    Icons.Rounded.Settings,
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
 }
 
 @Composable
-private fun SectionCard(
-    title: String,
-    count: Int,
-    onClick: () -> Unit,
-    content: @Composable ColumnScope.() -> Unit
+fun HomeFeatureCard(
+    card: HomeCard,
+    onClick: () -> Unit
 ) {
-    GlassCard(modifier = Modifier.fillMaxWidth(), onClick = onClick) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+    var pressed by remember { mutableStateOf(false) }
+    val scale by animateFloatAsState(
+        targetValue = if (pressed) 0.95f else 1f,
+        animationSpec = spring(stiffness = Spring.StiffnessMedium),
+        label = "card_scale"
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .scale(scale)
+            .clickable {
+                pressed = true
+                onClick()
+            },
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.linearGradient(
+                        colors = card.gradientColors.map { it.copy(alpha = 0.9f) }
+                    )
+                )
+                .padding(16.dp)
         ) {
-            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-            if (count > 0) {
-                Badge(containerColor = MaterialTheme.colorScheme.primaryContainer) {
-                    Text(count.toString(), color = MaterialTheme.colorScheme.onPrimaryContainer)
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = card.emoji,
+                    fontSize = 32.sp
+                )
+                Column {
+                    Text(
+                        text = card.title,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Text(
+                        text = card.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.8f),
+                        maxLines = 1
+                    )
                 }
             }
         }
-        Spacer(Modifier.height(10.dp))
-        content()
+    }
+
+    LaunchedEffect(pressed) {
+        if (pressed) {
+            kotlinx.coroutines.delay(100)
+            pressed = false
+        }
     }
 }
 
-private fun getGreeting(): String {
-    return when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
-        in 5..11 -> "صباح الخير 👋 Good Morning"
-        in 12..16 -> "مساء الخير 👋 Good Afternoon"
-        in 17..21 -> "مساء النور 👋 Good Evening"
-        else -> "طاب مساؤك 🌙 Good Night"
+fun getGreeting(): String {
+    val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    return when {
+        hour < 12 -> "Good Morning ☀️"
+        hour < 17 -> "Good Afternoon 🌤️"
+        hour < 21 -> "Good Evening 🌅"
+        else -> "Good Night 🌙"
     }
 }

@@ -1,59 +1,88 @@
 package com.nexus.personaldashboard.ui.theme
 
+import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = NexusPurpleLight,
-    onPrimary = BackgroundDark,
-    primaryContainer = Color(0xFF3B1A6E),
-    onPrimaryContainer = NexusPurpleLight,
-    secondary = NexusBlue,
-    tertiary = NexusTeal,
-    background = BackgroundDark,
+private val NexusDarkColorScheme = darkColorScheme(
+    primary = Purple80,
+    onPrimary = Purple10,
+    primaryContainer = Purple40,
+    onPrimaryContainer = Purple90,
+    secondary = Lavender60,
+    onSecondary = Purple10,
+    secondaryContainer = Lavender40,
+    onSecondaryContainer = Lavender80,
+    tertiary = Rose60,
+    onTertiary = Color.White,
+    tertiaryContainer = Rose40,
+    onTertiaryContainer = Rose80,
+    background = NeutralDark,
+    onBackground = NeutralLight,
     surface = SurfaceDark,
-    onBackground = TextPrimaryDark,
-    onSurface = TextPrimaryDark,
-    onSurfaceVariant = TextSecondaryDark,
-    outline = GlassBorderDark,
-    error = Error
+    onSurface = NeutralLight,
+    surfaceVariant = SurfaceVariantDark,
+    onSurfaceVariant = Lavender80,
+    outline = NeutralSoft,
+    error = Rose60,
+    onError = Color.White
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = NexusPurple,
-    onPrimary = SurfaceLight,
-    primaryContainer = Color(0xFFEDE9FE),
-    onPrimaryContainer = NexusPurpleDark,
-    secondary = NexusBlue,
-    tertiary = NexusTeal,
-    background = BackgroundLight,
+private val NexusLightColorScheme = lightColorScheme(
+    primary = Purple40,
+    onPrimary = Color.White,
+    primaryContainer = Purple90,
+    onPrimaryContainer = Purple20,
+    secondary = Lavender40,
+    onSecondary = Color.White,
+    secondaryContainer = Lavender80,
+    onSecondaryContainer = Purple20,
+    tertiary = Rose40,
+    onTertiary = Color.White,
+    tertiaryContainer = Rose80,
+    onTertiaryContainer = Rose40,
+    background = NeutralLight,
+    onBackground = NeutralDark,
     surface = SurfaceLight,
-    onBackground = TextPrimaryLight,
-    onSurface = TextPrimaryLight,
-    onSurfaceVariant = TextSecondaryLight,
-    outline = Color(0xFFE5E7EB),
-    error = Error
+    onSurface = NeutralDark,
+    surfaceVariant = SurfaceVariantLight,
+    onSurfaceVariant = Purple40,
+    outline = Lavender80,
+    error = Rose40,
+    onError = Color.White
 )
 
 @Composable
 fun NexusTheme(
-    themeMode: String = "SYSTEM",
+    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val isDark = when (themeMode) {
-        "DARK" -> true
-        "LIGHT" -> false
-        else -> isSystemInDarkTheme()
-    }
+    val colorScheme = if (darkTheme) NexusDarkColorScheme else NexusLightColorScheme
 
-    val colorScheme = if (isDark) DarkColorScheme else LightColorScheme
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.background.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+        }
+    }
 
     MaterialTheme(
         colorScheme = colorScheme,
         typography = NexusTypography,
-        shapes = NexusShapes,
         content = content
     )
 }

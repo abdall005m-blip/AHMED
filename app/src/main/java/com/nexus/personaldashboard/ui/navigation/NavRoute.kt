@@ -15,5 +15,21 @@ enum class NavRoute {
     ADD_SCHEDULE,
     EDIT_SCHEDULE,
     ADD_AI_APP,
-    EDIT_AI_APP
+    EDIT_AI_APP,
+    PRIVATE_CHAT,
+    GAMES,
+    GAME_XO,
+    GAME_RACING,
+    GAME_CONNECT_FOUR,
+    GAME_QUESTIONS,
+    COIN_STORE,
+    ISLAMIC,
+    PRAYER_TIMES,
+    QURAN,
+    AZKAR,
+    MOOD,
+    CALENDAR,
+    REMINDERS,
+    PROFILE,
+    SPECIAL_DAYS
 }

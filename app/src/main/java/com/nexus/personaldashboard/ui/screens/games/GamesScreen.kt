@@ -1,4 +1,4 @@
-package com.nexus.personaldashboard.ui.screens.entertainment
+package com.nexus.personaldashboard.ui.screens.games
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,23 +21,29 @@ import com.nexus.personaldashboard.ui.navigation.NavRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EntertainmentScreen(onNavigate: (NavRoute) -> Unit, onBack: () -> Unit) {
+fun GamesScreen(onNavigate: (NavRoute) -> Unit, onBack: () -> Unit) {
     Box(Modifier.fillMaxSize()) {
-        SectionBackground(section = "entertainment")
+        SectionBackground(section = "games")
         Column(Modifier.fillMaxSize().statusBarsPadding()) {
             TopAppBar(
-                title = { Text("Entertainment 🎮", fontWeight = FontWeight.Bold) },
+                title = { Text("Games 🎮", fontWeight = FontWeight.Bold) },
                 navigationIcon = { IconButton(onBack) { Icon(Icons.Rounded.ArrowBack, null) } },
+                actions = {
+                    Box(Modifier.clip(RoundedCornerShape(20.dp)).background(MaterialTheme.colorScheme.primaryContainer).padding(horizontal = 12.dp, vertical = 4.dp)) {
+                        Text("🪙 500", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = Color(0xFFF59E0B))
+                    }
+                    Spacer(Modifier.width(8.dp))
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
             Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    EntertainmentCard("💬", "الشات الخاص", "Private Chat", listOf(Color(0xFFEC4899), Color(0xFFBE185D)), Modifier.weight(1f)) { onNavigate(NavRoute.PRIVATE_CHAT) }
-                    EntertainmentCard("🎮", "الألعاب", "Games", listOf(Color(0xFF7C3AED), Color(0xFF4F46E5)), Modifier.weight(1f)) { onNavigate(NavRoute.GAMES) }
+                    GameCard("❌⭕", "XO", "Tic-Tac-Toe", listOf(Color(0xFFDC2626), Color(0xFF991B1B)), "+10 🪙", Modifier.weight(1f)) { onNavigate(NavRoute.GAME_XO) }
+                    GameCard("🏎️", "سباق السيارات", "Car Racing", listOf(Color(0xFFF97316), Color(0xFFEA580C)), "+15 🪙", Modifier.weight(1f)) { onNavigate(NavRoute.GAME_RACING) }
                 }
                 Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    EntertainmentCard("💖", "المزاج", "My Mood", listOf(Color(0xFFF59E0B), Color(0xFFD97706)), Modifier.weight(1f)) { onNavigate(NavRoute.MOOD) }
-                    EntertainmentCard("🕌", "إسلامي", "Islamic", listOf(Color(0xFF059669), Color(0xFF047857)), Modifier.weight(1f)) { onNavigate(NavRoute.ISLAMIC) }
+                    GameCard("🟡🔴", "اربع في صف", "Connect Four", listOf(Color(0xFF7C3AED), Color(0xFF4338CA)), "+20 🪙", Modifier.weight(1f)) { onNavigate(NavRoute.GAME_CONNECT_FOUR) }
+                    GameCard("❓", "الأسئلة", "Questions", listOf(Color(0xFF0891B2), Color(0xFF0E7490)), "+25 🪙", Modifier.weight(1f)) { onNavigate(NavRoute.GAME_QUESTIONS) }
                 }
             }
         }
@@ -45,7 +51,7 @@ fun EntertainmentScreen(onNavigate: (NavRoute) -> Unit, onBack: () -> Unit) {
 }
 
 @Composable
-fun EntertainmentCard(emoji: String, titleAr: String, titleEn: String, gradient: List<Color>, modifier: Modifier, onClick: () -> Unit) {
+fun GameCard(emoji: String, titleAr: String, titleEn: String, gradient: List<Color>, reward: String, modifier: Modifier, onClick: () -> Unit) {
     Box(
         modifier = modifier
             .fillMaxHeight()
@@ -55,10 +61,14 @@ fun EntertainmentCard(emoji: String, titleAr: String, titleEn: String, gradient:
             .padding(20.dp)
     ) {
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
-            Text(emoji, fontSize = 40.sp)
+            Text(emoji, fontSize = 36.sp)
             Column {
                 Text(titleAr, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color.White)
-                Text(titleEn, style = MaterialTheme.typography.bodySmall, color = Color.White.copy(.8f))
+                Text(titleEn, style = MaterialTheme.typography.bodySmall, color = Color.White.copy(.7f))
+                Spacer(Modifier.height(4.dp))
+                Box(Modifier.clip(RoundedCornerShape(8.dp)).background(Color.White.copy(.2f)).padding(horizontal = 8.dp, vertical = 2.dp)) {
+                    Text(reward, style = MaterialTheme.typography.labelSmall, color = Color.White, fontWeight = FontWeight.Bold)
+                }
             }
         }
     }
